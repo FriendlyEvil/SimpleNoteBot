@@ -9,8 +9,8 @@ from .callbacks import CALLBACK_MAPPING
 
 from .model import Group
 from .helpers import get_first_or_default
-from .process import create_group, get_note_from_group, process_new_note, set_last, create_cancel_button, clear_last, \
-    build_menu
+from .process import create_group, get_note_from_group, process_new_note, set_last, build_menu
+from .helpers import create_cancel_button, clear_last
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 

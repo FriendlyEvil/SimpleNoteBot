@@ -3,7 +3,8 @@ from .const import CHANGE_ACTION, MESSAGE_ACTION_CALLBACK, CANCEL_CREATION_GROUP
     MESSAGE_CALLBACK, DONE, CHANGE
 
 from .model import Note
-from .process import create_button_columns, set_last, clear_last, create_cancel_button
+from .process import create_button_columns, set_last
+from .helpers import clear_last, create_cancel_button
 
 
 def get_note_actions(note_id):

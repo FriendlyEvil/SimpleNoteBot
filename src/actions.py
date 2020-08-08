@@ -1,6 +1,7 @@
 from .const import LAST_DATA, CHANGE_ACTION, NOTE_ACTION, CREATE_GROUP_ACTION
 from .model import Note
-from .process import create_group, clear_last
+from .process import create_group
+from .helpers import clear_last
 
 
 def change_action(update, context, group):

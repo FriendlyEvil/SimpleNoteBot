@@ -1,19 +1,8 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
-from .const import LAST_ACTION, LAST_DATA, NOTE_ACTION, MESSAGE_CALLBACK, \
-    CANCEL_CREATION_GROUP_CALLBACK, EMPTY_ACTION, CANCEL_BUTTON
+from .const import NOTE_ACTION, MESSAGE_CALLBACK, CANCEL_BUTTON
 
+from .helpers import create_button_columns, set_last
 from .model import Note, Group, get_groups_or_create_default
-from .helpers import create_button_columns
-
-
-def clear_last(context):
-    context.user_data[LAST_ACTION] = EMPTY_ACTION
-    context.user_data[LAST_DATA] = None
-
-
-def set_last(context, action, data=None):
-    context.user_data[LAST_ACTION] = action
-    context.user_data[LAST_DATA] = data
 
 
 def create_group(update, context, name):
@@ -34,10 +23,6 @@ def process_new_note(update, context):
     set_last(context, NOTE_ACTION, {'note': text})
     reply_markup = build_menu(update, context, cancel_button=True)
     update.message.reply_text('Choose group to save', reply_markup=reply_markup)
-
-
-def create_cancel_button(text):
-    return InlineKeyboardMarkup([[InlineKeyboardButton(text, callback_data=f'{CANCEL_CREATION_GROUP_CALLBACK}')]])
 
 
 def build_menu(update, context, cancel_button=False):
