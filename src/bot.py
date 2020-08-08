@@ -9,7 +9,7 @@ from .callbacks import CALLBACK_MAPPING
 
 from .model import Group
 from .helpers import get_first_or_default
-from .process import create_group, get_note_from_group, process_new_note
+from .process import create_group, get_note_from_group, process_new_note, set_last
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -27,7 +27,7 @@ def help_command(update, context):
 def add_command(update, context):
     args = context.args
     if not args:
-        context.user_data[LAST_ACTION] = CREATE_GROUP_ACTION
+        set_last(context, CREATE_GROUP_ACTION)
         update.message.reply_text('Write category name:')
     else:
         name = ' '.join(args)

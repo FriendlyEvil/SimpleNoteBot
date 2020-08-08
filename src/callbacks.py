@@ -1,8 +1,8 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from .const import LAST_ACTION, LAST_DATA, CHANGE_ACTION, MESSAGE_ACTION_CALLBACK, MESSAGE_CALLBACK, DONE, CHANGE
+from .const import CHANGE_ACTION, MESSAGE_ACTION_CALLBACK, MESSAGE_CALLBACK, DONE, CHANGE
 
 from .model import Note
-from .process import create_button_columns
+from .process import create_button_columns, set_last
 
 
 def get_note_actions(note_id):
@@ -19,8 +19,7 @@ def message_action_callback(update, context, params):
         Note.delete_by_id(note_id)
         message = 'Deleted'
     elif action == CHANGE:
-        context.user_data[LAST_ACTION] = CHANGE_ACTION
-        context.user_data[LAST_DATA] = {'note_id': note_id}
+        set_last(context, CHANGE_ACTION, {'note_id': note_id})
         message = 'Write new note:'
     else:
         message = 'Technical error: repeat pleas'

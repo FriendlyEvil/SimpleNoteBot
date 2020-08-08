@@ -10,6 +10,11 @@ def clear_last(context):
     context.user_data[LAST_DATA] = None
 
 
+def set_last(context, action, data=None):
+    context.user_data[LAST_ACTION] = action
+    context.user_data[LAST_DATA] = data
+
+
 def create_group(update, context, name):
     Group.create(user_id=update.effective_user.id, name=name)
     reply_markup = build_menu(update, context)
@@ -25,8 +30,7 @@ def get_note_from_group(update, context, group):
 
 def process_new_note(update, context):
     text = update.message.text
-    context.user_data[LAST_DATA] = {'note': text, 'message_id': 15}
-    context.user_data[LAST_ACTION] = NOTE_ACTION
+    set_last(NOTE_ACTION, {'note': text})
     save_note_to_group(update, context)
 
 
