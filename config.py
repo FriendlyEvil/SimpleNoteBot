@@ -1,0 +1,7 @@
+BOT_TOKEN = 'TOKEN'
+
+DATABASE_NAME = 'database'
+DATABASE_USERNAME = 'name'
+DATABASE_PASSWORD = 'password'
+DATABASE_HOST = 'localhost'
+DATABASE_PORT = 5432
