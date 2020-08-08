@@ -3,7 +3,7 @@ import logging
 from config import BOT_TOKEN
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
-from .const import LAST_ACTION, CREATE_GROUP_ACTION, CANCEL_BUTTON
+from .const import LAST_ACTION, CREATE_GROUP_ACTION, CANCEL_BUTTON, CLEAR_GROUP_ACTION
 from .actions import ACTION_MAPPING
 from .callbacks import CALLBACK_MAPPING
 
@@ -35,6 +35,12 @@ def add_group_command(update, context):
     else:
         name = ' '.join(args)
         create_group(update, context, name)
+
+
+def clear_group_command(update, context):
+    set_last(context, CLEAR_GROUP_ACTION)
+    update.message.reply_text(get_message(update, context, 'Write the category name you want to clear'),
+                              reply_markup=build_menu(update, context, True))
 
 
 def on_message(update, context):
@@ -76,6 +82,7 @@ def start_bot():
     dp.add_handler(CommandHandler('start', start_command))
     dp.add_handler(CommandHandler('help', help_command))
     dp.add_handler(CommandHandler('add', add_group_command))
+    dp.add_handler(CommandHandler('clear', clear_group_command))
 
     dp.add_handler(MessageHandler(~Filters.command, on_message))
     updater.dispatcher.add_handler(CallbackQueryHandler(callback_on_choose))

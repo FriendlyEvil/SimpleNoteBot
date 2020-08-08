@@ -23,7 +23,14 @@ internalization = {
         'Group is created': 'Новая группа успешно создана',
         'Select message:': 'Выберите заметку для просмотра:',
         'Choose group to save': 'В какую категорию добавить?',
-        'Cancel': 'Отменить'
+        'Cancel': 'Отменить',
+        'Write the category name you want to clear': 'Какую категорию вы хотите очистить?',
+        'Category cleared': 'Категория очищена',
+        'Unknown category': 'Неизвестная категория',
+        'Category is empty': 'Категория пуста',
+        'favourites': 'Избранное',
+        'todo': 'Список дел',
+        'watch later': 'Посмотреть позже'
     },
     "en": {
         'Start message': 'Hi! I\'m bot for storing notes. Send me messages and I\'ll save it',
@@ -43,7 +50,14 @@ internalization = {
         'Group is created': 'The new group was created successfully',
         'Select message:': 'Select a note to view:',
         'Choose group to save': 'Choose group to save',
-        'Cancel': 'Cancel'
+        'Cancel': 'Cancel',
+        'Write the category name you want to clear': 'Write the category name you want to clear',
+        'Category cleared': 'Category cleared',
+        'Unknown category': 'Unknown category',
+        'Category is empty': 'Category is empty',
+        'favourites': 'Favourites',
+        'todo': 'Todo',
+        'watch later': 'Watch later'
     }
 }
 

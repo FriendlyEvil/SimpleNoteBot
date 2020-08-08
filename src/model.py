@@ -45,21 +45,10 @@ class Note(BaseModel):
         return Note.select().where(Note.group == group_id)
 
     @staticmethod
-    def create_note_in_new_group(user_id, group_name, message):
-        return Note.create(group=Group.create(user_id=user_id, group_name=group_name).id,
-                           message=message)
+    def delete_group(group_id):
+        return Note.delete().where(Note.group == group_id).execute()
 
 
 def create_tables():
     with db:
         db.create_tables([Group, Note])
-
-
-DEFAULT_GROUPS = ['favourites', 'todo', 'watch later']
-
-
-def get_groups_or_create_default(user_id):
-    groups = Group.get_by_user_id(user_id)
-    if groups:
-        return groups
-    return Group.create_groups(user_id, DEFAULT_GROUPS)
