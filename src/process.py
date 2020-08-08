@@ -1,5 +1,6 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
-from .const import LAST_ACTION, LAST_DATA, NOTE_ACTION, MESSAGE_CALLBACK, EMPTY_ACTION
+from .const import LAST_ACTION, LAST_DATA, NOTE_ACTION, MESSAGE_CALLBACK, \
+    CANCEL_CREATION_GROUP_CALLBACK, EMPTY_ACTION, CANCEL_BUTTON
 
 from .model import Note, Group, get_groups_or_create_default
 from .helpers import create_button_columns
@@ -30,17 +31,18 @@ def get_note_from_group(update, context, group):
 
 def process_new_note(update, context):
     text = update.message.text
-    set_last(NOTE_ACTION, {'note': text})
-    save_note_to_group(update, context)
-
-
-def save_note_to_group(update, context):
-    reply_markup = build_menu(update, context)
+    set_last(context, NOTE_ACTION, {'note': text})
+    reply_markup = build_menu(update, context, cancel_button=True)
     update.message.reply_text('Choose group to save', reply_markup=reply_markup)
 
 
-def build_menu(update, context):
-    groups = get_groups_or_create_default(update.effective_user.id)
-    groups = [group.name for group in groups]
-    groups = create_button_columns(groups)
+def create_cancel_button(text):
+    return InlineKeyboardMarkup([[InlineKeyboardButton(text, callback_data=f'{CANCEL_CREATION_GROUP_CALLBACK}')]])
+
+
+def build_menu(update, context, cancel_button=False):
+    groups = [group.name for group in get_groups_or_create_default(update.effective_user.id)]
+    groups = list(create_button_columns(groups))
+    if cancel_button:
+        groups.append([CANCEL_BUTTON])
     return ReplyKeyboardMarkup(groups, resize_keyboard=True)

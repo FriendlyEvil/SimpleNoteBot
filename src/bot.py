@@ -3,13 +3,14 @@ import logging
 from config import BOT_TOKEN
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
-from .const import LAST_ACTION, CREATE_GROUP_ACTION
+from .const import LAST_ACTION, CREATE_GROUP_ACTION, CANCEL_BUTTON
 from .actions import ACTION_MAPPING
 from .callbacks import CALLBACK_MAPPING
 
 from .model import Group
 from .helpers import get_first_or_default
-from .process import create_group, get_note_from_group, process_new_note, set_last
+from .process import create_group, get_note_from_group, process_new_note, set_last, create_cancel_button, clear_last, \
+    build_menu
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -24,11 +25,11 @@ def help_command(update, context):
     update.message.reply_text('Help message')
 
 
-def add_command(update, context):
+def add_group_command(update, context):
     args = context.args
     if not args:
         set_last(context, CREATE_GROUP_ACTION)
-        update.message.reply_text('Write category name:')
+        update.message.reply_text('Write category name:', reply_markup=create_cancel_button('Cancel'))
     else:
         name = ' '.join(args)
         create_group(update, context, name)
@@ -39,7 +40,10 @@ def on_message(update, context):
     group = get_first_or_default(Group.get_by_user_and_name(update.effective_user.id, text))
 
     action = ACTION_MAPPING.get(context.user_data.get(LAST_ACTION))
-    if action:
+    if action and text == CANCEL_BUTTON:
+        clear_last(context)
+        update.message.reply_text('Canceled...', reply_markup=build_menu(update, context))
+    elif action:
         action(update, context, group)
     elif group:
         get_note_from_group(update, context, group)
@@ -68,7 +72,7 @@ def start_bot():
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('start', start_command))
     dp.add_handler(CommandHandler('help', help_command))
-    dp.add_handler(CommandHandler('add', add_command))
+    dp.add_handler(CommandHandler('add', add_group_command))
 
     dp.add_handler(MessageHandler(~Filters.command, on_message))
     updater.dispatcher.add_handler(CallbackQueryHandler(callback_on_choose))
