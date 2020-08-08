@@ -9,3 +9,5 @@ DONE, CHANGE = map(str, range(2))
 
 # buttons
 CANCEL_BUTTON = 'Cancel'
+
+LANG = 'lang'

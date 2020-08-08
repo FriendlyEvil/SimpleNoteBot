@@ -2,6 +2,7 @@ from .const import LAST_DATA, CHANGE_ACTION, NOTE_ACTION, CREATE_GROUP_ACTION
 from .model import Note
 from .process import create_group
 from .helpers import clear_last
+from .internalization import get_message
 
 
 def change_action(update, context, group):
@@ -13,7 +14,7 @@ def change_action(update, context, group):
     note.save()
 
     clear_last(context)
-    update.message.reply_text('Changes are saved')
+    update.message.reply_text(get_message(update, context, 'Changes are saved'))
 
 
 def note_action(update, context, group):
@@ -21,7 +22,7 @@ def note_action(update, context, group):
     Note.create(group=group.id, message=data.get('note'))
 
     clear_last(context)
-    update.message.reply_text('Note is saved')
+    update.message.reply_text(get_message(update, context, 'Note is saved'))
 
 
 def create_group_action(update, context, group):

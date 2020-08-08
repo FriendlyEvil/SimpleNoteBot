@@ -1,5 +1,5 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from .const import LAST_ACTION, LAST_DATA, CANCEL_CREATION_GROUP_CALLBACK, EMPTY_ACTION
+from .const import LAST_ACTION, LAST_DATA, CANCEL_CREATION_GROUP_CALLBACK, EMPTY_ACTION, LANG
 
 
 def get_first_or_default(collection, default=None):
@@ -26,3 +26,11 @@ def set_last(context, action, data=None):
 
 def create_cancel_button(text):
     return InlineKeyboardMarkup([[InlineKeyboardButton(text, callback_data=f'{CANCEL_CREATION_GROUP_CALLBACK}')]])
+
+
+def get_lang(update, context):
+    lang = context.user_data.get(LANG)
+    if not lang:
+        lang = update.effective_user.language_code
+        context.user_data[LANG] = lang
+    return lang
